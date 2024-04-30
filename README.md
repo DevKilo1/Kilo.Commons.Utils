@@ -10,3 +10,5 @@ You can sync this repo with your own so that it's always kept up-to-date ([Learn
 **Not recommended to use the following**:
 
 - DecisionInteraction
+
+*Any file in this repository is subject to develop over-time and is not perfect.*
