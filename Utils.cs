@@ -704,7 +704,7 @@ Unique Error ID: {guid}
             await BaseScript.Delay(100);
         }
 
-        await BaseScript.Delay(1500);
+        await BaseScript.Delay(1000);
     }
 
     public static float PedFacePositionImmediately(Ped ped, Vector3 pos)
@@ -884,10 +884,23 @@ Unique Error ID: {guid}
         }
     }
 
+    public static async Task PedGrabProp(Ped ped, Prop prop)
+    {
+        await ped.Task.PlayAnimation("anim@amb@nightclub@mini@drinking@drinking_shots@ped_a@normal@", "pickup", 1f, 1f, 8000,
+            AnimationFlags.Loop, 1f);
+        await BaseScript.Delay(800);
+        if (prop is not null)
+            prop.AttachTo(ped.Bones[Bone.SKEL_R_Hand], new Vector3(0.1f, 0f, -0.1f));
+        await BaseScript.Delay(900);
+        ped.Task.ClearAnimation("anim@amb@nightclub@mini@drinking@drinking_shots@ped_a@normal@", "pickup");
+    }
+
     public static async Task CaptureEntity(Entity ent)
     {
         API.NetworkRequestControlOfEntity(ent.Handle);
         ent.IsPersistent = true;
+        if (!EntitiesInMemory.Contains(ent))
+            EntitiesInMemory.Add(ent);
         if (ent.Model.IsPed)
         {
             KeepTask((Ped)ent);
@@ -1057,7 +1070,7 @@ Unique Error ID: {guid}
         return vehicle;
     }
 
-    public static async Task<Ped> SpawnServicePed<TService>(PedHash pedHash, Vehicle vehicle, VehicleSeat seat)
+    public static async Task<Ped> SpawnServicePed(PedHash pedHash, Vehicle vehicle, VehicleSeat seat)
     {
         if (vehicle == null || !vehicle.Exists()) return null;
         Ped ped = await World.CreatePed(new(pedHash), vehicle.Position);
