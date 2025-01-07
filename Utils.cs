@@ -10,8 +10,7 @@ using FivePD.API.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace RemadeServices2._0;
-
+namespace Kilo.Commons.Utils;
 public class Utils
 {
     public static List<Vector4> ParkingSpots = new()
