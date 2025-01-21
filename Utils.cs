@@ -436,11 +436,11 @@ public class Utils
             _rot = rot;
         }
 
-        public void SetColor(int r, int g, int b)
+        public void SetColor(Color color)
         {
-            _R = r;
-            _G = g;
-            _B = b;
+            _R = color.R;
+            _G = color.G;
+            _B = color.B;
         }
 
         public void SetPosition(Vector3 pos)
