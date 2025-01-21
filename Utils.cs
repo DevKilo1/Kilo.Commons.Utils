@@ -124,6 +124,44 @@ public class Utils
             G = g;
             B = b;
         }
+        
+        public string GetTextCode()
+        {
+            Dictionary<string, Color> fivemColors = new Dictionary<string, Color>()
+            {
+                { "~r~", new Color(198,73,42) },       // Red
+                { "~b~", new Color(126,180,230) },       // Blue
+                { "~f~", new Color(126,180,230) },      // Blue
+                { "~g~", new Color(140,203,119) },       // Green
+                { "~y~", new Color(255, 255, 0) },     // Yellow
+                { "~p~", new Color(128, 0, 128) },     // Purple
+                { "~o~", new Color(231,144,82) },      // Orange
+                { "~q~", new Color(182,71,147) },      // Pink
+            };
+            
+            string closestColorCode = null;
+            double minDistance = double.MaxValue;
+
+            foreach (var kvp in fivemColors)
+            {
+                double distance = CalculateColorDistance(this, kvp.Value);
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestColorCode = kvp.Key;
+                }
+            }
+
+            return closestColorCode;
+        }
+        
+        private double CalculateColorDistance(Color c1, Color c2)
+        {
+            int rDiff = c1.R - c2.R;
+            int gDiff = c1.G - c2.G;
+            int bDiff = c1.B - c2.B;
+            return Math.Sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
+        }
     }
     
     public class Animation
