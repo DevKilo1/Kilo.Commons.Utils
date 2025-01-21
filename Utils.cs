@@ -72,14 +72,25 @@ public class Utils
         { PastelGreen, "PastelGreen" },
         { PastelPurple, "PastelPurple" },
         { PastelPink, "PastelPink" },
-        { PastelBlueish, "PastelBlueish" },
-        { PastelGreenish, "PastelGreenish" },
-        { PastelPurpleish, "PastelPurpleish" },
-        { PastelPinkish, "PastelPinkish" },
         { PastelLime, "PastelLime" },
         { PastelTurquoise, "PastelTurquoise" },
         { PastelPeach, "PastelPeach" },
-        { PastelLavender, "PastelLavender" }
+        { PastelLavender, "PastelLavender" },
+    };
+
+    private static readonly Dictionary<Utils.Color, string> ChatColors = new()
+    {
+        { LightRed, "~r~" },
+        { LightBlue, "~f~" },
+        { PastelOrange, "~o~" },
+        { PastelYellow, "~y~" },
+        { PastelGreen, "~g~" },
+        { PastelPurple, "~p~" },
+        { PastelPink, "~q~" },
+        { PastelLime, "~g~" },
+        { PastelTurquoise, "~f~" },
+        { PastelPeach, "~q~" },
+        { PastelLavender, "~p~" },
     };
 
     public static string GetColorName(Utils.Color color)
