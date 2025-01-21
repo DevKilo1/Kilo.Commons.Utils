@@ -13,6 +13,28 @@ using Newtonsoft.Json.Linq;
 namespace Kilo.Commons.Utils;
 public class Utils
 {
+    public static async Task<Ped> GetPedPlayerIsInteractingWith(float XBuffer = 3f, float YBuffer = 3f, float ZBuffer = 3f)
+    {
+        // This is experimental. The buffer parameters are optional, but you can define where the ped has to be relative to the player.
+        Ped[] allPeds = World.GetAllPeds();
+        return allPeds.FirstOrDefault(ped =>
+        {
+            if (ped is not null && ped.Exists())
+            {
+                if (ped.Position.DistanceTo(Game.PlayerPed.Position) < 3f)
+                {
+                    var offset = API.GetOffsetFromEntityGivenWorldCoords(Game.PlayerPed.Handle, ped.Position.X,
+                        ped.Position.Y, ped.Position.Z);
+                    if (offset.X < XBuffer && offset.Y < YBuffer && offset.Z < ZBuffer)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        });
+    }
     public static async Task Wait(int ms, Func<bool> predicate, int buffer = 100)
     {
         int soFar = 0;
