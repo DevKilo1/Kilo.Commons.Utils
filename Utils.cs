@@ -44,7 +44,24 @@ public class Utils
             soFar += buffer;
         }
     }
-
+    public static Color[] UserFriendlyColors = new[]
+    {
+        new Utils.Color(255, 102, 102), // Light red
+        new Utils.Color(102, 178, 255), // Light blue
+        new Utils.Color(255, 204, 153), // Pastel orange
+        new Utils.Color(255, 255, 153), // Pastel yellow
+        new Utils.Color(153, 255, 153), // Pastel green
+        new Utils.Color(204, 153, 255), // Pastel purple
+        new Utils.Color(255, 153, 204), // Pastel pink
+        new Utils.Color(153, 204, 255), // Pastel blue-ish
+        new Utils.Color(204, 255, 204), // Pastel green-ish
+        new Utils.Color(204, 204, 255), // Pastel purple-ish
+        new Utils.Color(255, 204, 255), // Pastel pink-ish
+        new Utils.Color(204, 255, 153), // Pastel lime
+        new Utils.Color(153, 255, 204), // Pastel turquoise
+        new Utils.Color(255, 153, 102), // Pastel peach
+        new Utils.Color(153, 102, 255)  // Pastel lavender
+    };
     public class Color
     {
         public int R { get; private set; }
