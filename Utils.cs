@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 namespace Kilo.Commons.Utils;
 public class Utils
 {
-    public static async void Wait(int ms, Func<bool> predicate, int buffer = 100)
+    public static async Task Wait(int ms, Func<bool> predicate, int buffer = 100)
     {
         int soFar = 0;
         while (soFar < ms && predicate())
