@@ -63,7 +63,7 @@ public class Utils
     public static Utils.Color PastelPeach => new Utils.Color(255, 153, 102);
     public static Utils.Color PastelLavender => new Utils.Color(153, 102, 255);
 
-    private static readonly Dictionary<Utils.Color, string> ColorNames = new()
+    public static readonly Dictionary<Utils.Color, string> ColorNames = new()
     {
         { LightRed, "LightRed" },
         { LightBlue, "LightBlue" },
