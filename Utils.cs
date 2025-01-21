@@ -78,7 +78,7 @@ public class Utils
         { PastelLavender, "PastelLavender" },
     };
 
-    private static readonly Dictionary<Utils.Color, string> ChatColors = new()
+    private static readonly Dictionary<Utils.Color, string> TextColors = new()
     {
         { LightRed, "~r~" },
         { LightBlue, "~f~" },
@@ -99,7 +99,17 @@ public class Utils
         {
             return name;
         }
-        return null; // Or throw an exception
+        return null;
+    }
+
+    public static string GetTextFormat(Color color)
+    {
+        if (TextColors.TryGetValue(color, out string name))
+        {
+            return name;
+        }
+
+        return null;
     }
 }
     
