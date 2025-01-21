@@ -139,15 +139,15 @@ public class Utils
                 { "~q~", new Color(182,71,147) },      // Pink
             };
             
-            string closestColorCode = null;
-            double minDistance = double.MaxValue;
+            string closestColorCode = "~s~";
+            double maxDistance = 100;
 
             foreach (var kvp in fivemColors)
             {
                 double distance = CalculateColorDistance(this, kvp.Value);
-                if (distance < minDistance)
+                if (distance < maxDistance)
                 {
-                    minDistance = distance;
+                    maxDistance = distance;
                     closestColorCode = kvp.Key;
                 }
             }
