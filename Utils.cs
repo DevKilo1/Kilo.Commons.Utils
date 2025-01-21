@@ -41,18 +41,29 @@ public class Utils
 
         public Animation SetEntity(Ped ent)
         {
-            if (Entity is not null && EntitiesInMemory.Contains(Entity))
+            if (Entity is not null && keepTaskAnimation.Contains(Entity))
                 _ = StopKeepTaskPlayAnimation(ent);
             Entity = ent;
             return this;
         }
 
-        public Animation AssignTask(Ped ped = null)
+        public Animation AssignTask()
         {
-            if (ped is not null)
-                SetEntity(ped);
-            
             _ = KeepTaskPlayAnimation(Entity, Dict, Set);
+            return this;
+        }
+
+        public Animation EndTask()
+        {
+            if (Entity is not null && keepTaskAnimation.Contains(Entity))
+                _ = StopKeepTaskPlayAnimation(Entity);
+            return this;
+        }
+
+        public async Task<Animation> EndTaskAsync()
+        {
+            if (Entity is not null && keepTaskAnimation.Contains(Entity))
+                await StopKeepTaskPlayAnimation(Entity);
             return this;
         }
     }
