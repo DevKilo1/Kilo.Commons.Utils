@@ -44,24 +44,54 @@ public class Utils
             soFar += buffer;
         }
     }
-    public static Color[] UserFriendlyColors = new[]
+    
+    public static class UserFriendlyColors
+{
+    public static Utils.Color LightRed => new Utils.Color(255, 102, 102);
+    public static Utils.Color LightBlue => new Utils.Color(102, 178, 255);
+    public static Utils.Color PastelOrange => new Utils.Color(255, 204, 153);
+    public static Utils.Color PastelYellow => new Utils.Color(255, 255, 153);
+    public static Utils.Color PastelGreen => new Utils.Color(153, 255, 153);
+    public static Utils.Color PastelPurple => new Utils.Color(204, 153, 255);
+    public static Utils.Color PastelPink => new Utils.Color(255, 153, 204);
+    public static Utils.Color PastelBlueish => new Utils.Color(153, 204, 255);
+    public static Utils.Color PastelGreenish => new Utils.Color(204, 255, 204);
+    public static Utils.Color PastelPurpleish => new Utils.Color(204, 204, 255);
+    public static Utils.Color PastelPinkish => new Utils.Color(255, 204, 255);
+    public static Utils.Color PastelLime => new Utils.Color(204, 255, 153);
+    public static Utils.Color PastelTurquoise => new Utils.Color(153, 255, 204);
+    public static Utils.Color PastelPeach => new Utils.Color(255, 153, 102);
+    public static Utils.Color PastelLavender => new Utils.Color(153, 102, 255);
+
+    private static readonly Dictionary<Utils.Color, string> ColorNames = new()
     {
-        new Utils.Color(255, 102, 102), // Light red
-        new Utils.Color(102, 178, 255), // Light blue
-        new Utils.Color(255, 204, 153), // Pastel orange
-        new Utils.Color(255, 255, 153), // Pastel yellow
-        new Utils.Color(153, 255, 153), // Pastel green
-        new Utils.Color(204, 153, 255), // Pastel purple
-        new Utils.Color(255, 153, 204), // Pastel pink
-        new Utils.Color(153, 204, 255), // Pastel blue-ish
-        new Utils.Color(204, 255, 204), // Pastel green-ish
-        new Utils.Color(204, 204, 255), // Pastel purple-ish
-        new Utils.Color(255, 204, 255), // Pastel pink-ish
-        new Utils.Color(204, 255, 153), // Pastel lime
-        new Utils.Color(153, 255, 204), // Pastel turquoise
-        new Utils.Color(255, 153, 102), // Pastel peach
-        new Utils.Color(153, 102, 255)  // Pastel lavender
+        { LightRed, "LightRed" },
+        { LightBlue, "LightBlue" },
+        { PastelOrange, "PastelOrange" },
+        { PastelYellow, "PastelYellow" },
+        { PastelGreen, "PastelGreen" },
+        { PastelPurple, "PastelPurple" },
+        { PastelPink, "PastelPink" },
+        { PastelBlueish, "PastelBlueish" },
+        { PastelGreenish, "PastelGreenish" },
+        { PastelPurpleish, "PastelPurpleish" },
+        { PastelPinkish, "PastelPinkish" },
+        { PastelLime, "PastelLime" },
+        { PastelTurquoise, "PastelTurquoise" },
+        { PastelPeach, "PastelPeach" },
+        { PastelLavender, "PastelLavender" }
     };
+
+    public static string GetColorName(Utils.Color color)
+    {
+        if (ColorNames.TryGetValue(color, out string name))
+        {
+            return name;
+        }
+        return null; // Or throw an exception
+    }
+}
+    
     public class Color
     {
         public int R { get; private set; }
