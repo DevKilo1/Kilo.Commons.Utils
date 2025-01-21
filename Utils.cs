@@ -44,6 +44,19 @@ public class Utils
             soFar += buffer;
         }
     }
+
+    public class Color
+    {
+        public int R { get; private set; }
+        public int G { get; private set; }
+        public int B { get; private set; }
+        public Color(int r, int g, int b)
+        {
+            R = r;
+            G = g;
+            B = b;
+        }
+    }
     
     public class Animation
     {
