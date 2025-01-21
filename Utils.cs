@@ -14,6 +14,87 @@ namespace RemadeServices2._0;
 
 public class Utils
 {
+    public class Animation
+    {
+        public string Dict { get; }
+        public string Set { get; }
+        public Ped Entity { get; private set; }
+
+        public Animation(string dictionary, string set)
+        {
+            Dict = dictionary;
+            Set = set;
+        }
+
+        public Animation Load()
+        {
+            API.RequestAnimDict(Dict);
+            return this;
+        }
+
+        public async Task<Animation> LoadAsync()
+        {
+            API.RequestAnimDict(Dict);
+            while (!API.HasAnimDictLoaded(Dict))
+                await BaseScript.Delay(100);
+            return this;
+        }
+
+        public Animation SetEntity(Ped ent)
+        {
+            if (Entity is not null && EntitiesInMemory.Contains(Entity))
+                _ = StopKeepTaskPlayAnimation(ent);
+            Entity = ent;
+            return this;
+        }
+
+        public Animation AssignTask(Ped ped = null)
+        {
+            if (ped is not null)
+                SetEntity(ped);
+            
+            _ = KeepTaskPlayAnimation(Entity, Dict, Set);
+            return this;
+        }
+    }
+    
+    
+    public static Vector4 JObjectToVector4(JToken obj)
+    {
+        int x = obj["X"] is int ? (int)obj["X"] : 0;
+        int y = obj["Y"] is int ? (int)obj["Y"] : 0;
+        int z = obj["Y"] is int ? (int)obj["Z"] : 0;
+        int w = obj["W"] is int ? (int)obj["W"] : 0;
+        return new Vector4(x, y, z, w);
+    }
+
+    public static JObject Vector4ToJObject(Vector4 vec)
+    {
+        return new JObject()
+        {
+            ["X"] = vec.X,
+            ["Y"] = vec.Y,
+            ["Z"] = vec.Z,
+            ["W"] = vec.W
+        };
+    }
+    public static Vector3 JObjectToVector3(JToken obj)
+    {
+        int x = obj["X"] is int ? (int)obj["X"] : 0;
+        int y = obj["Y"] is int ? (int)obj["Y"] : 0;
+        int z = obj["Y"] is int ? (int)obj["Z"] : 0;
+        return new Vector3(x, y, z);
+    }
+    public static JObject Vector3ToJObject(Vector3 vec)
+    {
+        return new JObject()
+        {
+            ["X"] = vec.X,
+            ["Y"] = vec.Y,
+            ["Z"] = vec.Z
+        };
+    }
+    
     public static List<Vector4> ParkingSpots = new()
     {
         new Vector4(428.82089233398f, 126.65857696533f, 100.41599273682f, 67.186576843262f)
