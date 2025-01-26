@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -13,6 +13,251 @@ using Newtonsoft.Json.Linq;
 namespace Kilo.Commons.Utils;
 public class Utils
 {
+    public static async Task<Ped> GetPedPlayerIsInteractingWith(float XBuffer = 3f, float YBuffer = 3f, float ZBuffer = 3f)
+    {
+        // This is experimental. The buffer parameters are optional, but you can define where the ped has to be relative to the player.
+        Ped[] allPeds = World.GetAllPeds();
+        return allPeds.FirstOrDefault(ped =>
+        {
+            if (ped is not null && ped.Exists())
+            {
+                if (ped.Position.DistanceTo(Game.PlayerPed.Position) < 3f)
+                {
+                    var offset = API.GetOffsetFromEntityGivenWorldCoords(Game.PlayerPed.Handle, ped.Position.X,
+                        ped.Position.Y, ped.Position.Z);
+                    if (offset.X < XBuffer && offset.Y < YBuffer && offset.Z < ZBuffer)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        });
+    }
+    public static async Task Wait(int ms, Func<bool> predicate, int buffer = 100)
+    {
+        int soFar = 0;
+        while (soFar < ms && predicate())
+        {
+            await BaseScript.Delay(buffer);
+            soFar += buffer;
+        }
+    }
+    
+    public static class UserFriendlyColors
+{
+    public static Utils.Color LightRed => new Utils.Color(255, 102, 102);
+    public static Utils.Color LightBlue => new Utils.Color(102, 178, 255);
+    public static Utils.Color PastelOrange => new Utils.Color(255, 204, 153);
+    public static Utils.Color PastelYellow => new Utils.Color(255, 255, 153);
+    public static Utils.Color PastelGreen => new Utils.Color(153, 255, 153);
+    public static Utils.Color PastelPurple => new Utils.Color(204, 153, 255);
+    public static Utils.Color PastelPink => new Utils.Color(255, 153, 204);
+    public static Utils.Color PastelBlueish => new Utils.Color(153, 204, 255);
+    public static Utils.Color PastelGreenish => new Utils.Color(204, 255, 204);
+    public static Utils.Color PastelPurpleish => new Utils.Color(204, 204, 255);
+    public static Utils.Color PastelPinkish => new Utils.Color(255, 204, 255);
+    public static Utils.Color PastelLime => new Utils.Color(204, 255, 153);
+    public static Utils.Color PastelTurquoise => new Utils.Color(153, 255, 204);
+    public static Utils.Color PastelPeach => new Utils.Color(255, 153, 102);
+    public static Utils.Color PastelLavender => new Utils.Color(153, 102, 255);
+
+    public static readonly Dictionary<Utils.Color, string> ColorNames = new()
+    {
+        { LightRed, "LightRed" },
+        { LightBlue, "LightBlue" },
+        { PastelOrange, "PastelOrange" },
+        { PastelYellow, "PastelYellow" },
+        { PastelGreen, "PastelGreen" },
+        { PastelPurple, "PastelPurple" },
+        { PastelPink, "PastelPink" },
+        { PastelLime, "PastelLime" },
+        { PastelTurquoise, "PastelTurquoise" },
+        { PastelPeach, "PastelPeach" },
+        { PastelLavender, "PastelLavender" },
+    };
+
+    private static readonly Dictionary<Utils.Color, string> TextColors = new()
+    {
+        { LightRed, "~r~" },
+        { LightBlue, "~f~" },
+        { PastelOrange, "~o~" },
+        { PastelYellow, "~y~" },
+        { PastelGreen, "~g~" },
+        { PastelPurple, "~p~" },
+        { PastelPink, "~q~" },
+        { PastelLime, "~g~" },
+        { PastelTurquoise, "~f~" },
+        { PastelPeach, "~q~" },
+        { PastelLavender, "~p~" },
+    };
+
+    public static string GetColorName(Utils.Color color)
+    {
+        if (ColorNames.TryGetValue(color, out string name))
+        {
+            return name;
+        }
+        return null;
+    }
+
+    public static string GetTextFormat(Color color)
+    {
+        if (TextColors.TryGetValue(color, out string name))
+        {
+            return name;
+        }
+
+        return null;
+    }
+}
+    
+    public class Color
+    {
+        public int R { get; private set; }
+        public int G { get; private set; }
+        public int B { get; private set; }
+        public Color(int r, int g, int b)
+        {
+            R = r;
+            G = g;
+            B = b;
+        }
+
+        public static Color Default = new(0, 0, 0);
+        
+        public string GetTextCode()
+        {
+            Dictionary<string, Color> fivemColors = new Dictionary<string, Color>()
+            {
+                { "~r~", new Color(198,73,42) },       // Red
+                { "~b~", new Color(126,180,230) },       // Blue
+                { "~f~", new Color(126,180,230) },      // Blue
+                { "~g~", new Color(140,203,119) },       // Green
+                { "~y~", new Color(255, 255, 0) },     // Yellow
+                { "~p~", new Color(128, 0, 128) },     // Purple
+                { "~o~", new Color(231,144,82) },      // Orange
+                { "~q~", new Color(182,71,147) },      // Pink
+            };
+            
+            string closestColorCode = "~s~";
+            double maxDistance = 100;
+
+            foreach (var kvp in fivemColors)
+            {
+                double distance = CalculateColorDistance(this, kvp.Value);
+                if (distance < maxDistance)
+                {
+                    maxDistance = distance;
+                    closestColorCode = kvp.Key;
+                }
+            }
+
+            return closestColorCode;
+        }
+        
+        private double CalculateColorDistance(Color c1, Color c2)
+        {
+            int rDiff = c1.R - c2.R;
+            int gDiff = c1.G - c2.G;
+            int bDiff = c1.B - c2.B;
+            return Math.Sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
+        }
+    }
+    
+    public class Animation
+    {
+        public string Dict { get; }
+        public string Set { get; }
+        public Ped Entity { get; private set; }
+
+        public Animation(string dictionary, string set)
+        {
+            Dict = dictionary;
+            Set = set;
+        }
+
+        public Animation Load()
+        {
+            API.RequestAnimDict(Dict);
+            return this;
+        }
+
+        public async Task<Animation> LoadAsync()
+        {
+            API.RequestAnimDict(Dict);
+            while (!API.HasAnimDictLoaded(Dict))
+                await BaseScript.Delay(100);
+            return this;
+        }
+
+        public Animation SetEntity(Ped ent)
+        {
+            if (Entity is not null && keepTaskAnimation.Contains(Entity))
+                _ = StopKeepTaskPlayAnimation(ent);
+            Entity = ent;
+            return this;
+        }
+
+        public Animation AssignTask()
+        {
+            _ = KeepTaskPlayAnimation(Entity, Dict, Set);
+            return this;
+        }
+
+        public Animation EndTask()
+        {
+            if (Entity is not null && keepTaskAnimation.Contains(Entity))
+                _ = StopKeepTaskPlayAnimation(Entity);
+            return this;
+        }
+
+        public async Task<Animation> EndTaskAsync()
+        {
+            if (Entity is not null && keepTaskAnimation.Contains(Entity))
+                await StopKeepTaskPlayAnimation(Entity);
+            return this;
+        }
+    }
+    
+    
+    public static Vector4 JObjectToVector4(JToken obj)
+    {
+        int x = obj["X"] is int ? (int)obj["X"] : 0;
+        int y = obj["Y"] is int ? (int)obj["Y"] : 0;
+        int z = obj["Y"] is int ? (int)obj["Z"] : 0;
+        int w = obj["W"] is int ? (int)obj["W"] : 0;
+        return new Vector4(x, y, z, w);
+    }
+
+    public static JObject Vector4ToJObject(Vector4 vec)
+    {
+        return new JObject()
+        {
+            ["X"] = vec.X,
+            ["Y"] = vec.Y,
+            ["Z"] = vec.Z,
+            ["W"] = vec.W
+        };
+    }
+    public static Vector3 JObjectToVector3(JToken obj)
+    {
+        int x = obj["X"] is int ? (int)obj["X"] : 0;
+        int y = obj["Y"] is int ? (int)obj["Y"] : 0;
+        int z = obj["Y"] is int ? (int)obj["Z"] : 0;
+        return new Vector3(x, y, z);
+    }
+    public static JObject Vector3ToJObject(Vector3 vec)
+    {
+        return new JObject()
+        {
+            ["X"] = vec.X,
+            ["Y"] = vec.Y,
+            ["Z"] = vec.Z
+        };
+    }
+    
     public static List<Vector4> ParkingSpots = new()
     {
         new Vector4(428.82089233398f, 126.65857696533f, 100.41599273682f, 67.186576843262f)
