@@ -168,6 +168,7 @@ public class Utils
     
     public class Animation
     {
+        public bool Playing { get; private set; }
         public string Dict { get; }
         public string Set { get; }
         public Ped Entity { get; private set; }
@@ -203,6 +204,7 @@ public class Utils
         public Animation AssignTask()
         {
             _ = KeepTaskPlayAnimation(Entity, Dict, Set);
+            Playing = true;
             return this;
         }
 
@@ -210,6 +212,7 @@ public class Utils
         {
             if (Entity is not null && keepTaskAnimation.Contains(Entity))
                 _ = StopKeepTaskPlayAnimation(Entity);
+            Playing = false;
             return this;
         }
 
