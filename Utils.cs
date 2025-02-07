@@ -1070,13 +1070,13 @@ Unique Error ID: {guid}
         await BaseScript.Delay(duration);
     }
 
-    public static async Task SubtitleChat(Entity entity, string chat, int red = 255, int green = 255, int blue = 255,
+    public static async Task SubtitleChat(Entity entity, string chat, Color color,
         int opacity = 255)
     {
         int time = chat.Length * 150;
         Utils.Draw3DText(new Vector3(0f, 0f, 1f), chat, 0.5f,
             time,
-            red, green, blue, opacity, entity);
+            color.R, color.G, color.B, opacity, entity);
         await BaseScript.Delay(time);
     }
 
