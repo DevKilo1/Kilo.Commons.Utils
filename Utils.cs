@@ -181,11 +181,16 @@ public class Utils
             Set = set;
         }
 
-        public static void StopAllForPed(Ped ped)
+        public static async void StopAllForPed(Ped ped)
         {
             if (_animations.ContainsKey(ped))
             {
-                _animations[ped].ForEach(anim => anim.EndTask());
+                foreach (var animation in _animations[ped])
+                {
+                    Debug.WriteLine("Ending2");
+                    animation.EndTask();
+                    await BaseScript.Delay(100);
+                }
             }
         }
 
@@ -222,8 +227,11 @@ public class Utils
 
         public Animation EndTask()
         {
+            Debug.WriteLine("Ending");
             if (Entity is not null && keepTaskAnimation.Contains(Entity))
+            {
                 _ = StopKeepTaskPlayAnimation(Entity);
+            }
             Playing = false;
             if (_animations.TryGetValue(Entity!, out var list))
                 list.Remove(this);
@@ -956,7 +964,6 @@ Unique Error ID: {guid}
                 //Utils.Print(animDict + ", " +animSet);
                 await ped.Task.PlayAnimation(animDict, animSet, 8f, 8f, -1, flags, 1f);
             }
-
             await BaseScript.Delay(1000);
         }
     }
