@@ -244,12 +244,16 @@ public class Utils
             ["W"] = vec.W
         };
     }
-    public static Vector3 JObjectToVector3(JToken obj)
+    public static Vector3 JObjectToVector3(JToken _obj)
     {
-        int x = obj["X"] is int ? (int)obj["X"] : 0;
-        int y = obj["Y"] is int ? (int)obj["Y"] : 0;
-        int z = obj["Y"] is int ? (int)obj["Z"] : 0;
-        return new Vector3(x, y, z);
+        var obj = (JObject)_obj;
+        if (!obj.TryGetValue("X", out var x))
+            x = 0;
+        if (!obj.TryGetValue("Y", out var y))
+            y = 0;
+        if (!obj.TryGetValue("Z", out var z))
+            z = 0;
+        return new Vector3((int)x, (int)y, (int)z);
     }
     public static JObject Vector3ToJObject(Vector3 vec)
     {
