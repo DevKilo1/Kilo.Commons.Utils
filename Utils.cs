@@ -213,6 +213,8 @@ public class Utils
         {
             _ = KeepTaskPlayAnimation(Entity, Dict, Set);
             Playing = true;
+            if (_animations.TryGetValue(Entity, out var list))
+                list.Add(this);
             return this;
         }
 
@@ -221,6 +223,8 @@ public class Utils
             if (Entity is not null && keepTaskAnimation.Contains(Entity))
                 _ = StopKeepTaskPlayAnimation(Entity);
             Playing = false;
+            if (_animations.TryGetValue(Entity!, out var list))
+                list.Remove(this);
             return this;
         }
 
