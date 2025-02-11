@@ -181,11 +181,15 @@ public class Utils
             Set = set;
         }
 
-        public static void StopAllForPed(Ped ped)
+        public static async void StopAllForPed(Ped ped)
         {
             if (_animations.ContainsKey(ped))
             {
-                _animations[ped].ForEach(anim => anim.EndTask());
+                foreach (var animation in _animations[ped].ToList())
+                {
+                    animation.EndTask();
+                    await BaseScript.Delay(100);
+                }
             }
         }
 
