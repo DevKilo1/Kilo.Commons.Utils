@@ -217,6 +217,12 @@ public class Utils
             Playing = true;
             if (_animations.TryGetValue(Entity, out var list))
                 list.Add(this);
+            else
+            {
+                list = new List<Animation>();
+                list.Add(this);
+                _animations.Add(Entity, list);
+            }
             return this;
         }
 
