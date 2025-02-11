@@ -184,7 +184,9 @@ public class Utils
         public static void StopAllForPed(Ped ped)
         {
             if (_animations.ContainsKey(ped))
+            {
                 _animations[ped].ForEach(anim => anim.EndTask());
+            }
         }
 
         public Animation Load()
