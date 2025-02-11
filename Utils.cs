@@ -183,8 +183,8 @@ public class Utils
 
         public static void StopAllForPed(Ped ped)
         {
-            if (_animations.TryGetValue(ped, out var list))
-                list.ForEach(anim => anim.EndTask());
+            if (_animations.ContainsKey(ped))
+                _animations[ped].ForEach(anim => anim.EndTask());
         }
 
         public Animation Load()
