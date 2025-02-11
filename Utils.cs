@@ -173,10 +173,18 @@ public class Utils
         public string Set { get; }
         public Ped Entity { get; private set; }
 
+        private static Dictionary<Ped, List<Animation>> _animations = new();
+        
         public Animation(string dictionary, string set)
         {
             Dict = dictionary;
             Set = set;
+        }
+
+        public static void StopAllForPed(Ped ped)
+        {
+            var animations = _animations[ped] ?? [];
+            animations.ForEach(anim => anim.EndTask());
         }
 
         public Animation Load()
