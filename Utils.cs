@@ -251,10 +251,10 @@ public class Utils
     
     public static Vector4 JObjectToVector4(JToken obj)
     {
-        int x = obj["X"] is int ? (int)obj["X"] : 0;
-        int y = obj["Y"] is int ? (int)obj["Y"] : 0;
-        int z = obj["Y"] is int ? (int)obj["Z"] : 0;
-        int w = obj["W"] is int ? (int)obj["W"] : 0;
+        int x = (int)obj["X"] is int ? (int)obj["X"] : 0;
+        int y = (int)obj["Y"] is int ? (int)obj["Y"] : 0;
+        int z = (int)obj["Y"] is int ? (int)obj["Z"] : 0;
+        int w = (int)obj["W"] is int ? (int)obj["W"] : 0;
         return new Vector4(x, y, z, w);
     }
 
