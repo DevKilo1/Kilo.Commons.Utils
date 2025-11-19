@@ -6,7 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using FivePD.API.Utils;
+using FiveFR._API.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -818,7 +818,7 @@ public class Utils
         LinkedVehicles.Remove(veh1);
     }
     
-    public static async Task<Vehicle> CloneVehicle(Vehicle vehicle, bool destroyOld = false, bool recursive = true)
+    /*public static async Task<Vehicle> CloneVehicle(Vehicle vehicle, bool destroyOld = false, bool recursive = true)
     {
         Vehicle v = vehicle;
         var veh = await World.CreateVehicle(new Model((VehicleHash)v.Model.Hash),
@@ -859,7 +859,7 @@ public class Utils
         }
         
         return veh;
-    }
+    }*/
 
     public static async Task TaskParkVehicle(Ped ped, Vehicle veh, int drivingStyle = 0)
     {
